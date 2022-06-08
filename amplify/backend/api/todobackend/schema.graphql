@@ -1,0 +1,22 @@
+type Cat @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  owner: ID!
+  Dogs: [Dog] @hasMany(indexName: "byCat", fields: ["id"])
+  Dog: Dog @hasOne
+}
+
+type Dog @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  todos: [Todo] @manyToMany(relationName: "TodoDog")
+  catID: ID! @index(name: "byCat")
+}
+
+type Todo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+  Dogs: [Dog] @manyToMany(relationName: "TodoDog")
+}
+ 
